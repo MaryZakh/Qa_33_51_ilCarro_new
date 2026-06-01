@@ -51,21 +51,21 @@ public class HelperCar extends HelperBase {
         int day = now.getDayOfMonth();
 
         LocalDate from = LocalDate.parse(dateFrom, DateTimeFormatter.ofPattern("M/d/yyyy")); //2026-09-15
-        LocalDate to = LocalDate.parse(dateTo,DateTimeFormatter.ofPattern("M/d/yyyy"));
+        LocalDate to = LocalDate.parse(dateTo, DateTimeFormatter.ofPattern("M/d/yyyy"));
         //LocalDate from1 = LocalDate.parse("2013:23/05",DateTimeFormatter.ofPattern("yyyy:dd/MM"));
         //System.out.println(from1);
 
-        int diffMonth = from.getMonthValue()-month;
-        if(diffMonth>0){
+        int diffMonth = from.getMonthValue() - month;
+        if (diffMonth > 0) {
             clickNextMontBtn(diffMonth);
         }
-        click(By.xpath("//span[text()='"+from.getDayOfMonth()+"']"));
+        click(By.xpath("//button[not(contains(@class, 'rdrDayPassive'))][not(contains(@class, 'rdrDayDisabled'))]//span[text()='" + from.getDayOfMonth() + "']"));
 
-        diffMonth = to.getMonthValue()-from.getMonthValue();
-        if(diffMonth>0){
+        diffMonth = to.getMonthValue() - from.getMonthValue();
+        if (diffMonth > 0) {
             clickNextMontBtn(diffMonth);
         }
-        click(By.xpath("//span[text()='"+to.getDayOfMonth()+"']"));
+        click(By.xpath("//button[not(contains(@class, 'rdrDayPassive'))][not(contains(@class, 'rdrDayDisabled'))]//span[text()='" + to.getDayOfMonth() + "']"));
 
     }
 
@@ -74,5 +74,39 @@ public class HelperCar extends HelperBase {
             click(By.cssSelector(".rdrNextPrevButton.rdrNextButton"));
 
         }
+    }
+
+    public void searchAnyPeriodSuccess(String city, String dateFrom, String dateTo) {
+        typeCity(city);
+        click(By.id("dates"));
+        //"10/15/2026", "3/10/2027"
+        LocalDate now = LocalDate.now();
+        LocalDate from = LocalDate.parse(dateFrom, DateTimeFormatter.ofPattern("M/d/yyyy"));
+        LocalDate to = LocalDate.parse(dateTo, DateTimeFormatter.ofPattern("M/d/yyyy"));
+
+        int diffYear;
+        int diffMonth;
+        //***from***
+        diffYear = from.getYear() - now.getYear();
+        if (diffYear == 0) {
+            diffMonth = from.getMonthValue() - now.getMonthValue();
+        } else {
+            diffMonth = 12 - now.getMonthValue() + from.getMonthValue();
+        }
+        clickNextMontBtn(diffMonth);
+        click(By.xpath("//button[not(contains(@class, 'rdrDayPassive'))][not(contains(@class, 'rdrDayDisabled'))]//span[text()='" + from.getDayOfMonth() + "']"));
+        //***to***
+        diffYear = to.getYear() - from.getYear();
+        if (diffYear == 0) {
+            diffMonth = to.getMonthValue() - from.getMonthValue();
+        } else {
+            diffMonth = 12 - from.getMonthValue() + to.getMonthValue();
+        }
+        clickNextMontBtn(diffMonth);
+        click(By.xpath("//button[not(contains(@class, 'rdrDayPassive'))][not(contains(@class, 'rdrDayDisabled'))]//span[text()='" + to.getDayOfMonth() + "']"));
+    }
+
+    public void clickLogo() {
+        click(By.cssSelector(".header>a.logo"));
     }
 }

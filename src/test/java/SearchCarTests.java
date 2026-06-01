@@ -1,28 +1,38 @@
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class SearchCarTests extends TestBase {
 
 
-//    @Test
-//    public void searchCurrentMonthSuccess() {
-//        app.getHelperCar().searchCurrentMonth("Haifa","5/30/2026","5/31/2026");
-//        app.getHelperCar().submit();
-//        Assert.assertTrue(app.getHelperCar().isListOfCarsAppeared());
-//    }
+    @BeforeMethod
+    public void preCondition(){
+        app.getHelperCar().clickLogo();
+    }
 
 
     @Test
-    public void searchCurrentYear(){
-        app.getHelperCar().searchCurrentYear("Haifa","10/29/2026","12/16/2026");
+    public void searchCurrentMonthSuccess() {
+        app.getHelperCar().searchCurrentMonth("Haifa","6/2/2026","6/21/2026");
+        app.getHelperCar().getScreen("src/test/resources/screenshots/current.png");
         app.getHelperCar().submit();
         Assert.assertTrue(app.getHelperCar().isListOfCarsAppeared());
     }
 
-//    @Test
-//    public void searchCurrentYear(){
-//        app.getHelperCar().searchAnyPeriodSuccess("Haifa","10/15/2026","3/10/2026");
-//        app.getHelperCar().submit();
-//        Assert.assertTrue(app.getHelperCar().isListOfCarsAppeared());
-//    }
+
+    @Test
+    public void searchCurrentYear() {
+        app.getHelperCar().searchCurrentYear("Haifa", "10/29/2026", "12/16/2026");
+        app.getHelperCar().getScreen("src/test/resources/screenshots/currentYear.png");
+        app.getHelperCar().submit();
+        Assert.assertTrue(app.getHelperCar().isListOfCarsAppeared());
+    }
+
+    @Test
+    public void searchAnyPeriod() {
+        app.getHelperCar().searchAnyPeriodSuccess("Haifa", "10/15/2026", "3/10/2027");
+        app.getHelperCar().getScreen("src/test/resources/screenshots/any.png");
+        app.getHelperCar().submit();
+        Assert.assertTrue(app.getHelperCar().isListOfCarsAppeared());
+    }
 }
